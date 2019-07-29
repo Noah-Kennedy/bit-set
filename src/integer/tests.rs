@@ -27,6 +27,12 @@ fn bounded_unchecked_contain<S, T>(value: u64) -> bool where S: IntegerBitSet<T>
     }
 }
 
+fn bounded_unchecked_remove<S, T>(mut set: S, value: u64) -> bool where S: IntegerBitSet<T> {
+    set.remove_unchecked(value);
+
+    !set.contains_unchecked(value)
+}
+
 #[quickcheck]
 fn bounded_unchecked_insertion_u16(value: u64) -> bool {
     bounded_unchecked_insertion::<IntegerBitSet16, u16>(value)
@@ -35,4 +41,9 @@ fn bounded_unchecked_insertion_u16(value: u64) -> bool {
 #[quickcheck]
 fn bounded_unchecked_contains_u16(value: u64) -> bool {
     bounded_unchecked_contain::<IntegerBitSet16, u16>(value)
+}
+
+#[quickcheck]
+fn bounded_unchecked_remove_u16(value: u64) -> bool {
+    bounded_unchecked_remove::<IntegerBitSet16, u16>(IntegerBitSet16::from(0xFF_FF), value)
 }
